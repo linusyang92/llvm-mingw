@@ -18,7 +18,7 @@ ENV TOOLCHAIN_PREFIX=/build/prefix
 COPY build-llvm.sh .
 RUN ./build-llvm.sh $TOOLCHAIN_PREFIX
 
-ENV TOOLCHAIN_ARCHS="i686 x86_64 armv7 aarch64"
+ENV TOOLCHAIN_ARCHS="i686 x86_64 aarch64"
 
 # Install the usual $TUPLE-clang binaries
 COPY wrappers/*.sh ./wrappers/
@@ -53,23 +53,4 @@ RUN cd hello && \
 RUN cd hello && \
     for arch in $TOOLCHAIN_ARCHS; do \
         $arch-w64-mingw32-clang hello-tls.c -o hello-tls-$arch.exe || exit 1; \
-    done
-
-WORKDIR /build/llvm-mingw
-
-# Build libunwind/libcxxabi/libcxx
-COPY build-libcxx.sh merge-archives.sh ./
-RUN ./build-libcxx.sh $TOOLCHAIN_PREFIX
-
-WORKDIR /build
-
-# Build C++ test applications
-COPY hello/*.cpp ./hello/
-RUN cd hello && \
-    for arch in $TOOLCHAIN_ARCHS; do \
-        $arch-w64-mingw32-clang++ hello.cpp -o hello-cpp-$arch.exe -fno-exceptions || exit 1; \
-    done
-RUN cd hello && \
-    for arch in $TOOLCHAIN_ARCHS; do \
-        $arch-w64-mingw32-clang++ hello-exception.cpp -o hello-exception-$arch.exe || exit 1; \
     done
