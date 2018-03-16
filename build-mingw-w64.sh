@@ -13,7 +13,7 @@ export PATH=$PREFIX/bin:$PATH
 : ${ARCHS:=${TOOLCHAIN_ARCHS-i686 x86_64 armv7 aarch64}}
 
 if [ ! -d mingw-w64 ]; then
-    git clone git://git.code.sf.net/p/mingw-w64/mingw-w64
+    git clone https://github.com/mirror/mingw-w64.git
     CHECKOUT=1
 fi
 
