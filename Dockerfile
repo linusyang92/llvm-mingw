@@ -45,12 +45,10 @@ RUN ./build-compiler-rt.sh $TOOLCHAIN_PREFIX
 WORKDIR /build
 ENV PATH=$TOOLCHAIN_PREFIX/bin:$PATH
 
-COPY hello/*.c ./hello/
-RUN cd hello && \
+COPY test/*.c ./test/
+RUN cd test && \
     for arch in $TOOLCHAIN_ARCHS; do \
-        $arch-w64-mingw32-clang hello.c -o hello-$arch.exe || exit 1; \
-    done
-RUN cd hello && \
-    for arch in $TOOLCHAIN_ARCHS; do \
-        $arch-w64-mingw32-clang hello-tls.c -o hello-tls-$arch.exe || exit 1; \
+        for test in hello hello-tls crt-test; do \
+            $arch-w64-mingw32-clang $test.c -o $test-$arch.exe || exit 1; \
+        done; \
     done
