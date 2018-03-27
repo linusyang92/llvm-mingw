@@ -18,7 +18,7 @@ ENV TOOLCHAIN_PREFIX=/build/prefix
 COPY build-llvm.sh .
 RUN ./build-llvm.sh $TOOLCHAIN_PREFIX
 
-ENV TOOLCHAIN_ARCHS="i686 x86_64 aarch64"
+ENV TOOLCHAIN_ARCHS="aarch64"
 
 # Install the usual $TUPLE-clang binaries
 COPY wrappers/*.sh ./wrappers/
